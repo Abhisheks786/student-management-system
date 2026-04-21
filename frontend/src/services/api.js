@@ -1,4 +1,5 @@
-const API_BASE_URL = "http://127.0.0.1:5000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "https://student-management-system-2ius.onrender.com/api";
 
 export const apiRequest = async (endpoint, options = {}) => {
   try {
@@ -20,7 +21,7 @@ export const apiRequest = async (endpoint, options = {}) => {
     return data;
   } catch (error) {
     if (error.name === "TypeError") {
-      throw new Error("Cannot connect to backend. Start backend on http://127.0.0.1:5000");
+      throw new Error("Cannot connect to backend. Check VITE_API_BASE_URL and backend CORS.");
     }
     throw error;
   }

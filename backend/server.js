@@ -12,12 +12,21 @@ connectDB();
 
 const app = express();
 
+const allowedOriginsFromEnv = (process.env.CORS_ORIGINS || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const defaultAllowedOrigins = ["https://delightful-paletas-2814b8.netlify.app"];
+
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
       const isAllowed =
-        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin) || /^http:\/\/localhost:\d+$/.test(origin);
+        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin) ||
+        /^http:\/\/localhost:\d+$/.test(origin) ||
+        defaultAllowedOrigins.includes(origin) ||
+        allowedOriginsFromEnv.includes(origin);
       if (isAllowed) return callback(null, true);
       return callback(new Error("Not allowed by CORS"));
     },
